@@ -1,9 +1,12 @@
+from functools import wraps
+
 def greeter(func):
-    name = func()
-    name = name.title()
-    print(f'Aloha {name}')
-    
-    pass
+    @wraps(func)
+    def inner(*args):
+        name = func(*args).title()
+        result = f'Aloha {name}'
+        return result
+    return inner
 
 
 def sums_of_str_elements_are_equal(func):
