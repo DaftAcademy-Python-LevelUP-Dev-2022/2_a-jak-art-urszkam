@@ -1,4 +1,8 @@
 def greeter(func):
+    name = func()
+    name = name.title()
+    print(f'Aloha {name}')
+    
     pass
 
 
