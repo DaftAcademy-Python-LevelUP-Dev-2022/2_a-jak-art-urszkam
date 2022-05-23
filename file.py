@@ -35,8 +35,40 @@ def sums_of_str_elements_are_equal(func):
 
 
 def format_output(*required_keys):
-    pass
+    def outer(func):
+        def inner(*args):
+            input = func(*args)
+            result = {}
+            for key in required_keys:
+                if '__' in key:
+                    keys = key.split('__')
+                    for single_key in keys:
+                        if single_key not in input:
+                            raise ValueError
+
+                    result[key] = ""
+                    for i in range(len(keys)):
+                        result[key] = result[key] + input[keys[i]] + " "
+                    result[key] = result[key][:-1]
+
+                else:
+                    if key in input:
+                        if input[key] != "":
+                            result[key] = input[key]
+                        else:
+                            result[key] = "Empty value"
+                    else:
+                        raise ValueError
+
+            return result
+        return inner
+    return outer
 
 
 def add_method_to_instance(klass):
-    pass
+    def outer(func):
+        def inner(*args, **kwargs):
+            return func()
+        setattr(klass, func.__name__, inner)
+        return inner
+    return outer
